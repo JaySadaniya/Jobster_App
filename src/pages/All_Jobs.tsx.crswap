@@ -1,0 +1,158 @@
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
+import { useState } from "react";
+import moment from "moment";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+
+import Input from "../components/ui/input/Input";
+import Button from "../components/ui/button/Button";
+import Select from "../components/ui/select/Select";
+
+import { searchSchema } from "../schema/validation/search";
+import Private from "../components/layout/Private";
+import { withLayout } from "../components/layout/utils";
+import JobDetail from "../components/JobDetail";
+
+type SearchSchema = {
+  searchText: string;
+  status: string;
+  type: string;
+  sort: string;
+};
+
+const All_Jobs = () => {
+  const [loaded, setLoaded] = useState<boolean>(false);
+  const [startDate, setStartDate] = useState<Date>(new Date());
+  const [endDate, setEndDate] = useState<Date>(new Date());
+
+  const jobs = [
+    {
+      id: 1,
+      position: "Position 1",
+      company: "Company 1",
+      jobLocation: "Location 1",
+      status: "pending",
+      jobType: "full-time",
+      jobPostingDate: moment.utc("2022-06-22").format(),
+    },
+    {
+      id: 2,
+      position: "Position 2",
+      company: "Company 2",
+      jobLocation: "Location 2",
+      status: "scheduled",
+      jobType: "part-time",
+      jobPostingDate: moment.utc("2022-04-12").format(),
+    },
+  ];
+
+  const {
+    reset,
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = useForm<SearchSchema>({
+    resolver: yupResolver(searchSchema),
+  });
+
+  const statusOptions = [
+    { id: 1, name: "all" },
+    { id: 2, name: "interview" },
+    { id: 3, name: "declined" },
+    { id: 4, name: "pending" },
+  ];
+
+  const typeOptions = [
+    { id: 1, name: "all" },
+    { id: 2, name: "full-time" },
+    { id: 3, name: "part-time" },
+    { id: 4, name: "remote" },
+    { id: 5, name: "internship" },
+  ];
+
+  const sortOptions = [
+    { id: 1, name: "latest" },
+    { id: 2, name: "oldest" },
+    { id: 3, name: "a-z" },
+    { id: 4, name: "z-a" },
+  ];
+
+  const searchHandler = () => {};
+
+  return (
+    <div>
+      <div className="p-10 bg-white m-5 rounded shadow-lg hover:shadow-2xl shadow-secondary-300">
+        <h1 className="text-3xl mb-5">Search Form</h1>
+        <form
+          onSubmit={handleSubmit(searchHandler)}
+          className="grid grid-cols-3 gap-8"
+        >
+          <span>
+            <Input
+              type="text"
+              label="Search"
+              placeholder="Search text here.."
+              {...register("searchText")}
+              error={errors.searchText?.message}
+              appendClass={" bg-brand-50"}
+            />
+          </span>
+
+          <Select options={statusOptions} label="Status" value={1} />
+
+          <Select options={typeOptions} label="Type" value={1} />
+
+          <Select options={sortOptions} label="Sort" value={1} />
+
+          <span>
+            <DatePicker
+              selected={startDate}
+              onChange={(date: Date) => setStartDate(date)}
+              selectsStart
+              startDate={startDate}
+              endDate={endDate}
+              classN
+            />
+            <DatePicker
+              selected={endDate}
+              onChange={(date: Date) => setEndDate(date)}
+              selectsEnd
+              startDate={startDate}
+              endDate={endDate}
+              minDate={startDate}
+            />
+          </span>
+
+          <span>
+            <button
+              type="reset"
+              className="bg-red-200 text-red-700 rounded h-[38px] hover:bg-red-700 hover:text-white self-end"
+            >
+              Clear Filters
+            </button>
+
+            <button
+              type="submit"
+              className="bg-brand-500 text-white rounded h-[38px] hover:bg-brand-700 self-end"
+            >
+              Search
+            </button>
+          </span>
+        </form>
+      </div>
+
+      <div className="mx-5 mt-14 mb-5 text-2xl font-semibold">
+        10 Jobs found
+      </div>
+
+      <div className="mx-5 grid grid-cols-2 gap-4">
+        <JobDetail {...jobs[0]} />
+        <JobDetail {...jobs[1]} />
+      </div>
+    </div>
+  );
+};
+
+export default withLayout(All_Jobs, Private);
