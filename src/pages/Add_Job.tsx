@@ -26,7 +26,7 @@ const Add_Job: FC = () => {
         (item) => item.id === data.jobType
       )!.name;
 
-      const response = await axios.post("api/jobs/add", data);
+      const response = await axios.post("/api/jobs/add", data);
       toast.show({ type: Type.success, message: "Job is added successfully" });
       history.push("/all-jobs");
     } catch (error: any) {

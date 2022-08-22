@@ -19,6 +19,13 @@ export const makeServer = ({ environment = "development" } = {}) => {
         return user;
       });
 
+      this.post("/api/user/edit", async (schema, request) => {
+        const payload = JSON.parse(request.requestBody);
+        const updatedUser = await schema.db.users.update(payload.id, payload);
+
+        return updatedUser;
+      });
+
       // jobs
       this.get("/api/jobs/all", (schema, request) => {
         const { models } = schema.all("job");
@@ -47,6 +54,27 @@ export const makeServer = ({ environment = "development" } = {}) => {
         const newData = await schema.db.jobs.insert(payload);
 
         return newData;
+      });
+
+      this.post("/api/jobs/edit", async (schema, request) => {
+        const payload = JSON.parse(request.requestBody);
+
+        const updatedData = await schema.db.jobs.update(payload.id, payload);
+
+        return updatedData;
+      });
+
+      this.get("/api/jobs/get/:jobId", async (schema, request) => {
+        const job = await schema.db.jobs.find(request.params.jobId);
+        return job;
+      });
+
+      this.delete("/api/jobs/delete/:jobId", async (schema, request) => {
+        const jobs = await schema.db.jobs.remove(request.params.jobId);
+
+        console.log("Jobs:", jobs);
+
+        return jobs;
       });
 
       this.post("/api/jobs/search", (schema, request) => {
@@ -118,11 +146,6 @@ export const makeServer = ({ environment = "development" } = {}) => {
         }
 
         return jobs;
-      });
-
-      this.get("/api/jobs/get/:jobId", async (schema, request) => {
-        const job = await schema.db.jobs.find(request.params.jobId);
-        return job;
       });
     },
     models: {

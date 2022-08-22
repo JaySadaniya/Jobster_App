@@ -19,6 +19,7 @@ import { useAuthContext } from "./context/AuthProvider";
 import All_Jobs from "./pages/All_Jobs";
 import Add_Job from "./pages/Add_Job";
 import Edit_Job from "./pages/Edit_Job";
+import Profile from "./pages/Profile";
 
 const Landing = lazy(() => import("./pages/Landing"));
 const Register = lazy(() => import("./pages/Register"));
@@ -92,6 +93,10 @@ function App() {
 
               <PrivateRoute path="/edit-job/:jobId">
                 <Edit_Job />
+              </PrivateRoute>
+
+              <PrivateRoute path="/profile">
+                <Profile />
               </PrivateRoute>
 
               <PrivateRoute path="/">

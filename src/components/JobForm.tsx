@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, useMemo, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -36,7 +36,8 @@ const JobForm: FC<jobFormSchema> = ({
   defaultValues,
   onSubmitHandler,
 }) => {
-  // const defaultV = useMemo(() => {}, [defaultValues]);
+  // const initialData = useMemo(() => defaultValues, [defaultValues]);
+
   const {
     reset,
     register,
@@ -48,7 +49,11 @@ const JobForm: FC<jobFormSchema> = ({
     defaultValues,
   });
 
-  console.log("Default Value: ", defaultValues);
+  useEffect(() => {
+    reset(defaultValues);
+  }, [defaultValues]);
+
+  // console.log("Default Value: ", initialData);
 
   return (
     <div className="p-10 bg-white m-5 rounded shadow-lg hover:shadow-2xl shadow-secondary-300">

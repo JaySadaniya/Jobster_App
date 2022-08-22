@@ -1,6 +1,7 @@
 import { FC } from "react";
 import moment from "moment";
 import { Link } from "react-router-dom";
+import axios from "axios";
 
 type IJobDetail = {
   id?: number;
@@ -10,6 +11,7 @@ type IJobDetail = {
   status?: string;
   jobType?: string;
   jobPostingDate?: string;
+  deleteJobHandler?: any;
 };
 
 const JobDetail: FC<IJobDetail> = ({
@@ -20,6 +22,7 @@ const JobDetail: FC<IJobDetail> = ({
   status,
   jobType,
   jobPostingDate,
+  deleteJobHandler,
 }) => {
   const statusColor =
     status === "pending"
@@ -103,7 +106,10 @@ const JobDetail: FC<IJobDetail> = ({
             Edit
           </button>
         </Link>
-        <button className="px-3 py-1 bg-red-200 text-red-700 rounded">
+        <button
+          onClick={() => deleteJobHandler(id)}
+          className="px-3 py-1 bg-red-200 text-red-700 rounded"
+        >
           Delete
         </button>
       </div>

@@ -1,7 +1,11 @@
 import { FC, useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useHistory } from "react-router-dom";
 import axios from "axios";
 
+import { Type } from "../components/ui/toast/Toast";
+import Loader from "../components/ui/loader/Loader";
+
+import { useToast } from "../context/ToastProvider";
 import Private from "../components/layout/Private";
 import JobForm from "../components/JobForm";
 import { withLayout } from "../components/layout/utils";
@@ -23,6 +27,8 @@ const Edit_Job: FC = () => {
     jobType: 1,
   });
   const { jobId } = useParams();
+  const history = useHistory();
+  const toast = useToast();
 
   const getTheJob = async () => {
     const { data } = await axios.get(`/api/jobs/get/${jobId}`);
@@ -35,16 +41,36 @@ const Edit_Job: FC = () => {
     )!.id;
 
     setDefaultValues(data);
+    setLoaded(true);
   };
 
   useEffect(() => {
     getTheJob();
-    setLoaded(true);
   }, []);
 
-  const onSubmitHandler = async (data: any) => {};
+  const onSubmitHandler = async (data: any) => {
+    try {
+      data.status = jobStatusOptions.find(
+        (item) => item.id === data.status
+      )!.name;
+      data.jobType = jobTypeOptions.find(
+        (item) => item.id === data.jobType
+      )!.name;
 
-  if (!loaded) return <>Loading...</>;
+      const response = await axios.post("/api/jobs/edit", data);
+      toast.show({ type: Type.success, message: "Job is edited successfully" });
+      history.push("/all-jobs");
+    } catch (error: any) {
+      toast.show({ type: Type.error, message: error.message });
+    }
+  };
+
+  if (!loaded)
+    return (
+      <div className="mt-20">
+        <Loader />;
+      </div>
+    );
 
   return (
     <JobForm

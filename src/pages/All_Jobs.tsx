@@ -81,6 +81,11 @@ const All_Jobs: FC = () => {
     // setLoaded(true);
   }, []);
 
+  const deleteJobHandler = async (jobId: number) => {
+    const response = await axios.delete(`/api/jobs/delete/${jobId}`);
+    searchHandler(defaultValues);
+  };
+
   return (
     <div>
       <div className="p-10 bg-white m-5 rounded shadow-lg hover:shadow-2xl shadow-secondary-300">
@@ -192,7 +197,11 @@ const All_Jobs: FC = () => {
 
           <div className="mx-5 grid grid-cols-2 gap-4">
             {jobs.map((job, index) => (
-              <JobDetail {...job} key={index} />
+              <JobDetail
+                {...job}
+                key={index}
+                deleteJobHandler={deleteJobHandler}
+              />
             ))}
           </div>
         </>
