@@ -1,14 +1,19 @@
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
+import { Link, useHistory, Redirect } from "react-router-dom";
 import { useState } from "react";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { EyeIcon, EyeOffIcon } from "@heroicons/react/outline";
+import axios from "axios";
 
 import Icon from "../components/ui/icon/Icon";
 import Button from "../components/ui/button/Button";
 import Input from "../components/ui/input/Input";
 import Image from "../components/ui/image/Image";
+import { Type } from "../components/ui/toast/Toast";
+
+import { useToast } from "../context/ToastProvider";
+import Auth from "../services/Auth";
 import { userSchema } from "../schema/validation/user";
 
 type UserSchema = {
@@ -19,14 +24,8 @@ type UserSchema = {
 
 const Register = () => {
   const [showPassword, setShowPassword] = useState<boolean>(false);
-
-  const updateShowPassword = (value: boolean) => setShowPassword(value);
-
-  const userSchema = yup.object().shape({
-    userName: yup.string().trim().required(),
-    email: yup.string().email().trim().required(),
-    password: yup.string().required(),
-  });
+  const toast = useToast();
+  const history = useHistory();
 
   const {
     reset,
@@ -36,10 +35,27 @@ const Register = () => {
   } = useForm<UserSchema>({
     resolver: yupResolver(userSchema),
   });
+
+  if (Auth.getToken()) return <Redirect to="/" />;
+
+  const updateShowPassword = (value: boolean) => setShowPassword(value);
+
+  const onSubmit = async (data: any) => {
+    try {
+      await axios.post("/api/user/register", data);
+
+      toast.show({ type: Type.success, message: "Registered successfully" });
+      history.push("/login");
+    } catch (error: any) {
+      console.error(error);
+      toast.show({ type: Type.error, message: error.message });
+    }
+  };
+
   return (
     <div className="pt-10">
       <form
-        //   onSubmit={handleSubmit(onSubmit)}
+        onSubmit={handleSubmit(onSubmit)}
         className="px-4 py-5 bg-white space-y-6 sm:px-6 sm:p-6 w-2/6 border-t-4 border-brand-500 rounded mx-auto shadow-lg hover:shadow-2xl shadow-secondary-300"
       >
         <div className="flex flex-col items-center">

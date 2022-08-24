@@ -9,11 +9,14 @@ import "react-datepicker/dist/react-datepicker.css";
 import { Link } from "react-router-dom";
 
 import Input from "../components/ui/input/Input";
+import { Type } from "../components/ui/toast/Toast";
 import Loader from "../components/ui/loader/Loader";
 import Button from "../components/ui/button/Button";
 import SelectControl from "../components/ui/form/Select";
 import DatePickerControl from "../components/ui/form/DatePicker";
 
+import DeleteModal, { IModal } from "../components/DeleteModal";
+import { useToast } from "../context/ToastProvider";
 import { searchSchema } from "../schema/validation/search";
 import { IJob } from "../types/models/IJob";
 import Private from "../components/layout/Private";
@@ -37,6 +40,13 @@ type SearchSchema = {
 const All_Jobs: FC = () => {
   const [loaded, setLoaded] = useState<boolean>(false);
   const [jobs, setJobs] = useState<IJob[]>([]);
+  const [deleteModalObj, setDeleteModalObj] = useState<IModal>({
+    open: false,
+    id: null,
+    name: "",
+  });
+
+  const toast = useToast();
 
   const defaultValues = { status: 1, type: 1, sort: 1, searchText: "" };
 
@@ -81,9 +91,24 @@ const All_Jobs: FC = () => {
     // setLoaded(true);
   }, []);
 
-  const deleteJobHandler = async (jobId: number) => {
-    const response = await axios.delete(`/api/jobs/delete/${jobId}`);
-    searchHandler(defaultValues);
+  const deleteJobHandler = async () => {
+    try {
+      if (!deleteModalObj.id) return;
+      setLoaded(false);
+
+      await axios.delete(`/api/jobs/delete/${deleteModalObj.id}`);
+      closeDeleteModal();
+      searchHandler(defaultValues);
+    } catch (error: any) {
+      console.error(error);
+      toast.show({ type: Type.error, message: error.message });
+    }
+  };
+
+  const closeDeleteModal = () => {
+    setDeleteModalObj((prevState) => {
+      return { ...prevState, id: null, open: false };
+    });
   };
 
   return (
@@ -200,12 +225,21 @@ const All_Jobs: FC = () => {
               <JobDetail
                 {...job}
                 key={index}
-                deleteJobHandler={deleteJobHandler}
+                setDeleteModalObj={setDeleteModalObj}
               />
             ))}
           </div>
         </>
       )}
+
+      <DeleteModal
+        modal={deleteModalObj}
+        isLoading={!loaded}
+        onClose={closeDeleteModal}
+        deleteClickHandler={deleteJobHandler}
+        title="Delete Job"
+        description={`Are you sure you want to delete the "${deleteModalObj.name}" job?`}
+      />
     </div>
   );
 };

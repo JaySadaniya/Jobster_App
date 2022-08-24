@@ -14,6 +14,15 @@ export const makeServer = ({ environment = "development" } = {}) => {
         return user;
       });
 
+      this.post("/api/user/register", (schema, request) => {
+        const payload = JSON.parse(request.requestBody);
+        payload.id = Date.now();
+
+        const newUser = schema.db.users.insert(payload);
+
+        return newUser;
+      });
+
       this.get("/api/user/:id", async (schema, request) => {
         const user = await schema.db.users.find(request.params.id);
         return user;
@@ -70,11 +79,7 @@ export const makeServer = ({ environment = "development" } = {}) => {
       });
 
       this.delete("/api/jobs/delete/:jobId", async (schema, request) => {
-        const jobs = await schema.db.jobs.remove(request.params.jobId);
-
-        console.log("Jobs:", jobs);
-
-        return jobs;
+        await schema.db.jobs.remove(request.params.jobId);
       });
 
       this.post("/api/jobs/search", (schema, request) => {

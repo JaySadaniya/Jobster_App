@@ -11,7 +11,7 @@ type IJobDetail = {
   status?: string;
   jobType?: string;
   jobPostingDate?: string;
-  deleteJobHandler?: any;
+  setDeleteModalObj?: any;
 };
 
 const JobDetail: FC<IJobDetail> = ({
@@ -22,7 +22,7 @@ const JobDetail: FC<IJobDetail> = ({
   status,
   jobType,
   jobPostingDate,
-  deleteJobHandler,
+  setDeleteModalObj,
 }) => {
   const statusColor =
     status === "pending"
@@ -107,7 +107,7 @@ const JobDetail: FC<IJobDetail> = ({
           </button>
         </Link>
         <button
-          onClick={() => deleteJobHandler(id)}
+          onClick={() => setDeleteModalObj({ id, name: position, open: true })}
           className="px-3 py-1 bg-red-200 text-red-700 rounded"
         >
           Delete

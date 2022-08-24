@@ -4,24 +4,29 @@ const Card: FC<{ theme: string; totalJobs?: number }> = ({
   theme,
   totalJobs,
 }) => {
-  const borderColor =
-    theme === "pending"
-      ? "border-pending-400"
-      : theme === "brand"
-      ? "border-brand-400"
-      : "border-declined-400";
-  const textColor =
-    theme === "pending"
-      ? "text-pending-400"
-      : theme === "brand"
-      ? "text-brand-400"
-      : "text-declined-400";
-  const bgColor =
-    theme === "pending"
-      ? "bg-pending-100"
-      : theme === "brand"
-      ? "bg-brand-100"
-      : "bg-declined-100";
+  let borderColor, textColor, bgColor, cardDetail;
+
+  switch (theme) {
+    case "pending":
+      borderColor = "border-pending-400";
+      textColor = "text-pending-400";
+      bgColor = "bg-pending-100";
+      cardDetail = "Pending Applications";
+      break;
+
+    case "brand":
+      borderColor = "border-brand-400";
+      textColor = "text-brand-400";
+      bgColor = "bg-brand-100";
+      cardDetail = "Interviews Scheduled";
+      break;
+
+    default:
+      borderColor = "border-declined-400";
+      textColor = "text-declined-400";
+      bgColor = "bg-declined-100";
+      cardDetail = "Jobs Declined";
+  }
 
   return (
     <div
@@ -71,11 +76,7 @@ const Card: FC<{ theme: string; totalJobs?: number }> = ({
           )}
         </span>
       </header>
-      <span className="text-lg">
-        {theme === "pending" && "Pending Applications"}
-        {theme === "brand" && "Interviews Scheduled"}
-        {theme === "declined" && "Jobs Declined"}
-      </span>
+      <span className="text-lg">{cardDetail}</span>
     </div>
   );
 };

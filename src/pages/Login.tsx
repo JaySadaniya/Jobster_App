@@ -1,6 +1,6 @@
 import { useForm } from "react-hook-form";
-import { Link, useHistory } from "react-router-dom";
-import { useState } from "react";
+import { Link, useHistory, Redirect } from "react-router-dom";
+import { useState, useEffect } from "react";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { EyeIcon, EyeOffIcon } from "@heroicons/react/outline";
@@ -40,9 +40,13 @@ const Login = () => {
     resolver: yupResolver(loginSchema),
   });
 
+  if (Auth.getToken()) return <Redirect to="/" />;
+
   const loginHandler = async (data: UserSchema) => {
     try {
-      Auth.login(data);
+      await Auth.login(data);
+
+      await auth.loadUserData();
 
       toast.show({ type: Type.success, message: "Logged in successfully!" });
       history.push("/");

@@ -17,7 +17,7 @@ export default class Auth {
     if (!data) throw new Error("Authentication is failed");
     Auth.setToken(data.id);
     // Auth.setAppExpiredTime(generateExprireTime(EXPIRED_TIMEOUT));
-    return;
+    return data;
   }
 
   static async me() {
