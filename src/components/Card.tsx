@@ -30,6 +30,7 @@ const Card: FC<{ theme: string; totalJobs?: number }> = ({
 
   return (
     <div
+      data-testid="card-component"
       className={`${borderColor} grow p-8 flex flex-col gap-5 justify-between bg-white rounded border-b-4`}
     >
       <header className={` ${textColor} text-6xl flex justify-between mt-5`}>

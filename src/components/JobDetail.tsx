@@ -1,7 +1,6 @@
 import { FC } from "react";
 import moment from "moment";
 import { Link } from "react-router-dom";
-import axios from "axios";
 
 type IJobDetail = {
   id?: number;
@@ -14,16 +13,7 @@ type IJobDetail = {
   setDeleteModalObj?: any;
 };
 
-const JobDetail: FC<IJobDetail> = ({
-  id,
-  position,
-  company,
-  jobLocation,
-  status,
-  jobType,
-  jobPostingDate,
-  setDeleteModalObj,
-}) => {
+const JobDetail: FC<IJobDetail> = ({ id, position, company, jobLocation, status, jobType, jobPostingDate, setDeleteModalObj }) => {
   const statusColor =
     status === "pending"
       ? "bg-pending-100 text-pending-500"
@@ -32,7 +22,7 @@ const JobDetail: FC<IJobDetail> = ({
       : "bg-declined-100 text-declined-500";
 
   return (
-    <div className="bg-white rounded shadow-lg shadow-secondary-300 capitalize">
+    <div className="bg-white rounded shadow-lg shadow-secondary-300 capitalize" data-testid="JobDetail-component">
       <div className="p-5 flex gap-8 border-b border-secondary-400">
         <div className="h-14 w-14 bg-brand-500 text-white text-3xl font-semibold rounded flex items-center justify-center capitalize">
           {company?.charAt(0)}
@@ -44,7 +34,7 @@ const JobDetail: FC<IJobDetail> = ({
       </div>
 
       <div className="px-5 pt-5 grid grid-cols-2">
-        <span className="flex gap-5 items-center h-fit mb-4 mb-4">
+        <span className="flex gap-5 items-center h-fit mb-4">
           <svg
             className="text-secondary-500"
             stroke="currentColor"
@@ -95,21 +85,14 @@ const JobDetail: FC<IJobDetail> = ({
           <span>{jobType}</span>
         </span>
 
-        <span className={`capitalize h-fit w-fit px-3 py-1 ${statusColor}`}>
-          {status}
-        </span>
+        <span className={`capitalize h-fit w-fit px-3 py-1 ${statusColor}`}>{status}</span>
       </div>
 
       <div className="px-5 pb-5 flex gap-3">
         <Link to={`/edit-job/${id}`}>
-          <button className="px-3 py-1 bg-green-200 text-green-700 rounded">
-            Edit
-          </button>
+          <button className="px-3 py-1 bg-green-200 text-green-700 rounded">Edit</button>
         </Link>
-        <button
-          onClick={() => setDeleteModalObj({ id, name: position, open: true })}
-          className="px-3 py-1 bg-red-200 text-red-700 rounded"
-        >
+        <button onClick={() => setDeleteModalObj({ id, name: position, open: true })} className="px-3 py-1 bg-red-200 text-red-700 rounded">
           Delete
         </button>
       </div>

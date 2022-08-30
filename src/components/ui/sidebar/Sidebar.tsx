@@ -12,15 +12,7 @@ import { ReactComponent as TimesIcon } from "../../../icons/times.svg";
 import { ReactComponent as FileAltIcon } from "../../../icons/file-alt.svg";
 import { ReactComponent as ChartBarIcon } from "../../../icons/chart-bar.svg";
 import { ReactComponent as UserFriendsIcon } from "../../../icons/user-friends.svg";
-import {
-  AGENTS,
-  EVENTS,
-  ROUTE_JOBS,
-  ROUTE_EVENTS,
-  ROUTE_AGENTS,
-  USER_MANAGEMENT,
-  ROUTE_USER_MANAGEMENT,
-} from "../../../utils/constants";
+import { AGENTS, EVENTS, ROUTE_JOBS, ROUTE_EVENTS, ROUTE_AGENTS, USER_MANAGEMENT, ROUTE_USER_MANAGEMENT } from "../../../utils/constants";
 
 const navigation = [
   // {
@@ -63,20 +55,14 @@ const Sidebar: FC<ISidebar> = ({ buttonRef, uiVersion }) => {
 
     buttonRef.current.onclick = () => {
       setSidebarOpen(false);
-      console.log("Setting sidebar", sidebarOpen);
+      // console.log("Setting sidebar", sidebarOpen);
     };
   }, [buttonRef]);
 
   return (
     <>
       <Transition.Root show={sidebarOpen} as={Fragment}>
-        <Dialog
-          as="div"
-          static
-          className="fixed inset-0 flex z-40 lg:hidden"
-          open={sidebarOpen}
-          onClose={setSidebarOpen}
-        >
+        <Dialog as="div" static className="fixed inset-0 flex z-40 lg:hidden" open={sidebarOpen} onClose={setSidebarOpen}>
           <Transition.Child
             as={Fragment}
             enter="transition-opacity ease-linear duration-300"
@@ -128,10 +114,7 @@ const Sidebar: FC<ISidebar> = ({ buttonRef, uiVersion }) => {
                   />
                 </Icon>
               </div>
-              <nav
-                className="mt-5 h-full divide-y divide-brand-800 overflow-y-auto"
-                aria-label="Sidebar"
-              >
+              <nav className="mt-5 h-full divide-y divide-brand-800 overflow-y-auto" aria-label="Sidebar">
                 <div className="px-2 space-y-1">
                   {navigation.map((item) => (
                     <NavLink
@@ -142,10 +125,7 @@ const Sidebar: FC<ISidebar> = ({ buttonRef, uiVersion }) => {
                       activeClassName="bg-brand-800 text-white group flex items-center px-2 py-2 text-sm leading-6 font-medium rounded-md"
                       aria-current={item.current ? "page" : undefined}
                     >
-                      <Icon
-                        appendClass="mr-4 flex-shrink-0"
-                        removeClass="text-gray-400"
-                      >
+                      <Icon appendClass="mr-4 flex-shrink-0" removeClass="text-gray-400">
                         <item.icon aria-hidden="true" />
                       </Icon>
                       {item.name}
@@ -176,10 +156,7 @@ const Sidebar: FC<ISidebar> = ({ buttonRef, uiVersion }) => {
                 />
               </Icon>
             </div>
-            <nav
-              className="mt-5 flex-1 flex flex-col divide-y divide-brand-800 overflow-y-auto"
-              aria-label="Sidebar"
-            >
+            <nav className="mt-5 flex-1 flex flex-col divide-y divide-brand-800 overflow-y-auto" aria-label="Sidebar">
               <div className="px-2 space-y-1">
                 {navigation.map((item) => (
                   <NavLink
@@ -190,10 +167,7 @@ const Sidebar: FC<ISidebar> = ({ buttonRef, uiVersion }) => {
                     activeClassName="bg-brand-800 text-white group flex items-center px-2 py-2 text-sm leading-6 font-medium rounded-md"
                     aria-current={item.current ? "page" : undefined}
                   >
-                    <Icon
-                      appendClass="mr-4 flex-shrink-0"
-                      removeClass="text-gray-400"
-                    >
+                    <Icon appendClass="mr-4 flex-shrink-0" removeClass="text-gray-400">
                       <item.icon aria-hidden="true" />
                     </Icon>
                     {item.name}

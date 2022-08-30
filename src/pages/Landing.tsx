@@ -1,10 +1,8 @@
 import { FC } from "react";
 import { Link } from "react-router-dom";
-import axios from "axios";
 
 import Button from "../components/ui/button/Button";
 import Image from "../components/ui/image/Image";
-import { makeServer } from "../mirage";
 
 const Landing: FC = () => {
   return (

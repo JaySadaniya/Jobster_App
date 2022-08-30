@@ -3,8 +3,6 @@
 import axios from "axios";
 import jwt from "jsonwebtoken";
 import { TOKEN_KEY } from "../utils/constants";
-import { EXPIRED_TIMEOUT } from "../utils/constants";
-import { generateExprireTime } from "../utils/general";
 
 type loginData = {
   email: string;

@@ -1,17 +1,13 @@
 import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import * as yup from "yup";
 import axios from "axios";
 import { useState, useEffect, FC } from "react";
-import moment from "moment";
-import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { Link } from "react-router-dom";
 
 import Input from "../components/ui/input/Input";
 import { Type } from "../components/ui/toast/Toast";
 import Loader from "../components/ui/loader/Loader";
-import Button from "../components/ui/button/Button";
 import SelectControl from "../components/ui/form/Select";
 import DatePickerControl from "../components/ui/form/DatePicker";
 
@@ -22,11 +18,7 @@ import { IJob } from "../types/models/IJob";
 import Private from "../components/layout/Private";
 import { withLayout } from "../components/layout/utils";
 import JobDetail from "../components/JobDetail";
-import {
-  statusOptions,
-  sortOptions,
-  typeOptions,
-} from "../utils/selectOptions";
+import { statusOptions, sortOptions, typeOptions } from "../utils/selectOptions";
 
 type SearchSchema = {
   searchText?: string;
@@ -47,6 +39,7 @@ const All_Jobs: FC = () => {
   });
 
   const toast = useToast();
+  // const history = useHistory();
 
   const defaultValues = { status: 1, type: 1, sort: 1, searchText: "" };
 
@@ -117,15 +110,10 @@ const All_Jobs: FC = () => {
         <span className="flex justify-between items-start mb-5">
           <h1 className="text-3xl">Search Job</h1>
           <Link to="/add-job">
-            <button className="bg-brand-500 text-white rounded h-[38px] hover:bg-brand-700 self-end px-5">
-              Add a new job
-            </button>
+            <button className="bg-brand-500 text-white rounded h-[38px] hover:bg-brand-700 self-end px-5">Add a new job</button>
           </Link>
         </span>
-        <form
-          onSubmit={handleSubmit(searchHandler)}
-          className="grid grid-cols-3 gap-8"
-        >
+        <form onSubmit={handleSubmit(searchHandler)} className="grid grid-cols-3 gap-8">
           <span>
             <Input
               type="text"
@@ -137,31 +125,14 @@ const All_Jobs: FC = () => {
             />
           </span>
 
-          <SelectControl
-            options={statusOptions}
-            label="Status"
-            control={control}
-            name="status"
-          />
+          <SelectControl options={statusOptions} label="Status" control={control} name="status" />
 
-          <SelectControl
-            options={typeOptions}
-            label="Type"
-            control={control}
-            name="type"
-          />
+          <SelectControl options={typeOptions} label="Type" control={control} name="type" />
 
-          <SelectControl
-            options={sortOptions}
-            label="Sort"
-            control={control}
-            name="sort"
-          />
+          <SelectControl options={sortOptions} label="Sort" control={control} name="sort" />
 
           <span>
-            <h1 className="block text-sm font-medium text-gray-700 mb-3">
-              From Date
-            </h1>
+            <h1 className="block text-sm font-medium text-gray-700 mb-3">From Date</h1>
 
             <DatePickerControl
               name="from_date"
@@ -175,9 +146,7 @@ const All_Jobs: FC = () => {
           </span>
 
           <span>
-            <h1 className="block text-sm font-medium text-gray-700 mb-3">
-              To Date
-            </h1>
+            <h1 className="block text-sm font-medium text-gray-700 mb-3">To Date</h1>
 
             <DatePickerControl
               name="to_date"
@@ -200,10 +169,7 @@ const All_Jobs: FC = () => {
               Clear Filters
             </button>
 
-            <button
-              type="submit"
-              className="bg-brand-500 text-white rounded h-[38px] hover:bg-brand-700 self-end grow"
-            >
+            <button type="submit" className="bg-brand-500 text-white rounded h-[38px] hover:bg-brand-700 self-end grow">
               Search
             </button>
           </span>
@@ -216,17 +182,11 @@ const All_Jobs: FC = () => {
         </div>
       ) : (
         <>
-          <div className="mx-5 mt-14 mb-5 text-2xl font-semibold">
-            {jobs.length} Jobs found
-          </div>
+          <div className="mx-5 mt-14 mb-5 text-2xl font-semibold">{jobs.length} Jobs found</div>
 
           <div className="mx-5 grid grid-cols-2 gap-4">
             {jobs.map((job, index) => (
-              <JobDetail
-                {...job}
-                key={index}
-                setDeleteModalObj={setDeleteModalObj}
-              />
+              <JobDetail {...job} key={index} setDeleteModalObj={setDeleteModalObj} />
             ))}
           </div>
         </>

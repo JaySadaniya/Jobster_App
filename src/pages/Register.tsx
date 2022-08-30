@@ -53,8 +53,9 @@ const Register = () => {
   };
 
   return (
-    <div className="pt-10">
+    <div className="pt-10 min-h-screen">
       <form
+        data-testid="register-form"
         onSubmit={handleSubmit(onSubmit)}
         className="px-4 py-5 bg-white space-y-6 sm:px-6 sm:p-6 w-2/6 border-t-4 border-brand-500 rounded mx-auto shadow-lg hover:shadow-2xl shadow-secondary-300"
       >

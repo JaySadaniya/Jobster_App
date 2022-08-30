@@ -36,13 +36,13 @@ const Dashboard: FC = () => {
 
   if (!loaded)
     return (
-      <div className="mt-24">
+      <div className="mt-24" data-testid="dashboard-loading-element">
         <Loader message="Loading data" />
       </div>
     );
 
   return (
-    <div className="flex gap-4">
+    <div className="flex gap-4" data-testid="dashboard-element">
       <Card theme="pending" totalJobs={pendingJobs} />
       <Card theme="brand" totalJobs={scheduledJobs} />
       <Card theme="declined" totalJobs={declinedJobs} />

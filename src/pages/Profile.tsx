@@ -1,4 +1,4 @@
-import { FC, useState, useEffect } from "react";
+import { FC, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -25,7 +25,6 @@ const Profile: FC = () => {
   const {
     reset,
     register,
-    control,
     handleSubmit,
     formState: { errors, isSubmitting },
   } = useForm<ProfileSchema>({
@@ -35,10 +34,10 @@ const Profile: FC = () => {
 
   useEffect(() => {
     reset(user);
-  }, [user]);
+  }, [user, reset]);
 
   const onSubmitHandler = async (data: any) => {
-    const updatedUser = await axios.post("/api/user/edit", data);
+    await axios.post("/api/user/edit", data);
     loadUserData();
   };
 
@@ -47,10 +46,7 @@ const Profile: FC = () => {
       <h1 className="text-3xl mb-5">Profile</h1>
 
       {loaded ? (
-        <form
-          onSubmit={handleSubmit(onSubmitHandler)}
-          className="grid grid-cols-3 gap-8"
-        >
+        <form onSubmit={handleSubmit(onSubmitHandler)} className="grid grid-cols-3 gap-8">
           <span>
             <Input
               type="text"
@@ -96,9 +92,7 @@ const Profile: FC = () => {
 
             <button
               type="submit"
-              className={`bg-brand-500 text-white rounded h-[38px] hover:bg-brand-700 self-end grow ${
-                isSubmitting && "cursor-not-allowed"
-              }`}
+              className={`bg-brand-500 text-white rounded h-[38px] hover:bg-brand-700 self-end grow ${isSubmitting && "cursor-not-allowed"}`}
             >
               {isSubmitting ? "Submitting" : "Submit"}
             </button>

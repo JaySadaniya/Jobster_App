@@ -47,7 +47,8 @@ function App() {
   // const server = useMemo(() => makeServer(), []);
   // console.log("server: ", server);
   const [firstTime, setFirstTime] = useState<boolean>(true);
-  const { loaded } = useAuthContext();
+  // const { loaded } = useAuthContext();
+
   if (firstTime) {
     setFirstTime(false);
     makeServer();

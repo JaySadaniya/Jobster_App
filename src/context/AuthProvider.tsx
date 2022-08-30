@@ -1,12 +1,5 @@
 import { useHistory } from "react-router-dom";
-import {
-  createContext,
-  FC,
-  ReactNode,
-  useContext,
-  useEffect,
-  useState,
-} from "react";
+import { createContext, FC, ReactNode, useContext, useEffect, useState } from "react";
 
 import Auth from "../services/Auth";
 import { IUser } from "../types/models/IUser";
@@ -23,8 +16,6 @@ type IAuthContext = {
 export const AuthContext = createContext<IAuthContext>({});
 
 export const AuthProvider: FC<IAuthProvider> = ({ children }) => {
-  const { push } = useHistory();
-
   const [user, setUser] = useState<IUser>();
   const [loaded, setLoaded] = useState(false);
 

@@ -2,8 +2,6 @@ import { FC } from "react";
 import axios from "axios";
 import { useHistory } from "react-router-dom";
 
-import Input from "../components/ui/input/Input";
-import SelectControl from "../components/ui/form/Select";
 import { Type } from "../components/ui/toast/Toast";
 
 import Private from "../components/layout/Private";
@@ -19,14 +17,10 @@ const Add_Job: FC = () => {
 
   const onSubmitHandler = async (data: any) => {
     try {
-      data.status = jobStatusOptions.find(
-        (item) => item.id === data.status
-      )!.name;
-      data.jobType = jobTypeOptions.find(
-        (item) => item.id === data.jobType
-      )!.name;
+      data.status = jobStatusOptions.find((item) => item.id === data.status)!.name;
+      data.jobType = jobTypeOptions.find((item) => item.id === data.jobType)!.name;
 
-      const response = await axios.post("/api/jobs/add", data);
+      await axios.post("/api/jobs/add", data);
       toast.show({ type: Type.success, message: "Job is added successfully" });
       history.push("/all-jobs");
     } catch (error: any) {
@@ -34,13 +28,7 @@ const Add_Job: FC = () => {
     }
   };
 
-  return (
-    <JobForm
-      onSubmitHandler={onSubmitHandler}
-      defaultValues={defaultValues}
-      formType="Add Job"
-    />
-  );
+  return <JobForm onSubmitHandler={onSubmitHandler} defaultValues={defaultValues} formType="Add Job" />;
 };
 
 export default withLayout(Add_Job, Private);
